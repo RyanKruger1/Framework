@@ -30,8 +30,8 @@ public class Reporting extends BaseFile {
         }
         // directory where output is to be printed
          avent = new ExtentAventReporter(f.getPath());
-        html = new ExtentHtmlReporter(f.getPath()+"\\"+tname+"\\"+dateTime()+"\\report.html");
-        extent = new ExtentReports();
+         html = new ExtentHtmlReporter(f.getPath()+"\\"+tname+"\\"+dateTime()+"\\report.html");
+         extent = new ExtentReports();
          test = extent.createTest(tname);
 
         extent.attachReporter(avent);
@@ -42,6 +42,11 @@ public class Reporting extends BaseFile {
 
     public  void Pass(String message){
         test.pass(message);
+        extent.flush();
+    }
+
+    public  void Info(String message){
+        test.info(message);
         extent.flush();
     }
 

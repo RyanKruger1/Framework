@@ -31,13 +31,12 @@ public class AppiumDriverInstance {
 
             DesiredCapabilities c = new DesiredCapabilities();
 
-            c.setCapability("deviceName","Nougat");
-            c.setCapability("udid","emulator-5554");
-            c.setCapability("platform","Android");
-            c.setCapability("platformVersion","9.0.0");
-            c.setCapability("appPackage","com.android.calculator2");
-            c.setCapability("appActivity","com.android.calculator2.Calculator");
-
+            c.setCapability("deviceName",BaseFile.avdName);
+            c.setCapability("udid",BaseFile.udid);
+            c.setCapability("platform",BaseFile.platform);
+            c.setCapability("platformVersion",BaseFile.androidVersion);
+            c.setCapability("appPackage",BaseFile.CalculatorPackageName);
+            c.setCapability("appActivity",BaseFile.CalculatorActivity);
 
             driver = new AppiumDriver<MobileElement>(serverUrl,c);
 
@@ -63,11 +62,10 @@ public class AppiumDriverInstance {
         }
     }
 
-    public static void StartAppiumServer(){
+    public static boolean StartAppiumServer(){
         try
         {
-
-             AppiumServiceBuilder ssb =new AppiumServiceBuilder();
+            AppiumServiceBuilder ssb =new AppiumServiceBuilder();
              ssb.usingPort(4723);
 
              service = AppiumDriverLocalService.buildService(ssb);
@@ -79,10 +77,11 @@ public class AppiumDriverInstance {
              }
             serverUrl = service.getUrl();
             System.out.println((serverUrl));
-
+            return true;
         } catch (Exception e)
         {
             e.printStackTrace();
+            return false;
         }
 
     }
@@ -104,9 +103,15 @@ public class AppiumDriverInstance {
     }
 
     public static boolean closeServer(){
-        System.out.println(serverUrl);
-        service.stop();
-        return true;
+        try{
+            System.out.println(serverUrl);
+            service.stop();
+            return true;
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+            return true;
+        }
+
     }
 
     public static boolean clickElementByXpath(By id){
