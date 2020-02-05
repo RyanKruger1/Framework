@@ -1,12 +1,16 @@
 package Core;
 
-import com.aventstack.extentreports.ExtentReporter;
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.*;
+import com.aventstack.extentreports.model.Media;
+import com.aventstack.extentreports.model.MediaType;
+import com.aventstack.extentreports.model.Screencast;
 import com.aventstack.extentreports.reporter.ExtentAventReporter;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import freemarker.template.SimpleDate;
+import org.apache.commons.io.FileUtils;
 import org.jsoup.Connection;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -30,7 +34,20 @@ public class Reporting extends BaseFile {
         }
         // directory where output is to be printed
          avent = new ExtentAventReporter(f.getPath());
-         html = new ExtentHtmlReporter(f.getPath()+"\\"+tname+"\\"+dateTime()+"\\report.html");
+
+        finalReportDir =f.getPath()+"\\"+tname+"\\"+dateTime();
+
+         ScreenshotDir = finalReportDir + "\\Screenshots";
+
+         File screenShots = new File(ScreenshotDir);
+
+         if(!screenShots.exists()){
+             screenShots.mkdirs();
+         }
+
+         String reportfile = finalReportDir+"\\report.html";
+         html = new ExtentHtmlReporter(reportfile);
+
          extent = new ExtentReports();
          test = extent.createTest(tname);
 
@@ -38,6 +55,29 @@ public class Reporting extends BaseFile {
         extent.attachReporter(html);
         extent.flush();
         return false;
+    }
+
+    public static File TakeScreenShot(){
+        try {
+            ScreenshotCounter++;
+            TakesScreenshot scrShot = ((TakesScreenshot) driver);
+            File f = scrShot.getScreenshotAs(OutputType.FILE);
+            File output = new File(ScreenshotDir+"//"+ScreenshotCounter+".png");
+            FileUtils.copyFile(f,output);
+            return output;
+        }catch(Exception ex){
+            System.out.println("Could not take photo.");
+            return null;
+        }
+    }
+
+    public void PassWithScreenShot(String message){
+       try {
+           test.pass(message, MediaEntityBuilder.createScreenCaptureFromPath(TakeScreenShot().getPath()).build());
+           extent.flush();
+       }catch(Exception ex){
+            String me = ex.getMessage();
+       }
     }
 
     public  void Pass(String message){
@@ -61,6 +101,7 @@ public class Reporting extends BaseFile {
         extent.flush();
 
     }
+
 
     public static String dateTime(){
         Date d = new Date();

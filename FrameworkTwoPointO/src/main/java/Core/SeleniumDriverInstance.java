@@ -5,10 +5,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
 
 public class SeleniumDriverInstance extends BaseFile{
 
-    private static WebDriver driver ;
+
 
 public static boolean OpenBrowser(){
 
@@ -21,6 +22,7 @@ public static boolean OpenBrowser(){
 public static boolean navigate(String url){
 
     driver.get(url);
+    r.PassWithScreenShot("Successfully navigated to Facebook.com");
     return true;
 }
 
@@ -58,7 +60,23 @@ public static boolean clickElementByXpath(By el){
         return true;
     }
 
-    public void waitSeconds(int count){
+    public static boolean SelectFromDropDownByXpath(By el, String text){
+    try {
+
+        WebElement i = driver.findElement(el);
+        Select s = new Select(i);
+        s.selectByValue (text);
+    }catch(Exception ex){
+        return false;
+    }
+    return true;
+
+
+
+
+    }
+
+    public static void waitSeconds(int count){
     try{
         Thread.sleep(count);
     }catch(Exception ex){
