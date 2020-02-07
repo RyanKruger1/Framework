@@ -7,6 +7,7 @@ import io.appium.java_client.service.local.AppiumServiceBuilder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import sun.tools.jar.CommandLine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,25 +48,10 @@ public class AppiumDriverInstance {
         }
     }
 
-    public static void CreateDeviceOnEmulator(){
-        String command = "emulator @One";
-        try
-        {
-            Process process = Runtime.getRuntime().exec(command);
-            BufferedReader stdInput = new BufferedReader(new
-                    InputStreamReader(process.getInputStream()));
-            System.out.println(stdInput.readLine());
-
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
     public static boolean StartAppiumServer(){
         try
         {
-            AppiumServiceBuilder ssb =new AppiumServiceBuilder();
+             AppiumServiceBuilder ssb =new AppiumServiceBuilder();
              ssb.usingPort(4723);
 
              service = AppiumDriverLocalService.buildService(ssb);

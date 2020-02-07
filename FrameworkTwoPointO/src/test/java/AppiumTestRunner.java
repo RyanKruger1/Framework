@@ -1,5 +1,6 @@
 import Core.AppiumDriverInstance;
 import Core.BaseFile;
+import Core.CommandLineExecutorInterface;
 import Core.Reporting;
 import PageObjects.AppiumPageObjects;
 import org.junit.After;
@@ -21,11 +22,16 @@ public class AppiumTestRunner  extends AppiumDriverInstance {
         try {
             BaseFile.tname = name.getMethodName();
             r.CreateReportFile();
+            if(CommandLineExecutorInterface.runCommand()){
+
+            }
 
 
             StartAppiumServer();
             StartServer();
+
             r.Pass("Successfully Started required servers");
+
 
         }catch(Exception ex){
 

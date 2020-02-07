@@ -12,6 +12,9 @@ public class BaseFile {
     public static String CalculatorPackageName = "com.android.calculator2";
     public static String udid = "emulator-5554";
     public static String platform = "Android";
+    public static String username = System.getProperty("user.name");
+    public static String emulatorLocationFolder = "C:\\Users\\"+username+"\\AppData\\Local\\Android\\Sdk\\emulator";
+
 
     //Set emulated device details here.....
     public static String avdName = "Nougat";// my devices name is nougat the same name as the version.
