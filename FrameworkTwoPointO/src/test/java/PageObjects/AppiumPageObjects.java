@@ -14,5 +14,11 @@ public class AppiumPageObjects {
     public static By eight(){return By.xpath("//android.widget.Button[@text='8']");}
     public static By nine(){return By.xpath("//android.widget.Button[@text='9']");}
 
+    //----------- Universal Music Player application --------------------------//
+    public static By Genres(){return By.xpath("//android.widget.TextView[@text='Genres']");}
+    public static By Rock(){return By.xpath("//android.widget.TextView[@text='Rock']");}
+    public static By Cinematic(){return By.xpath("//android.widget.TextView[@text='Cinematic']");}
+    public static By JazzBlues(){return By.xpath("//android.widget.TextView[@text='Jazz & Blues']");}
+    public static By Awakening(){return By.xpath("//android.widget.TextView[@text = 'Awakening']");}
 
 }

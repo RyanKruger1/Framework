@@ -18,62 +18,78 @@ import java.net.URL;
 
 public class AppiumDriverInstance {
 
-    AppiumDriver app ;
+    AppiumDriver app;
     public static String port = "4723";
-   public static  AppiumDriver<MobileElement> driver;
-    static AppiumDriverLocalService service ;
-    static URL serverUrl ;
+    public static AppiumDriver<MobileElement> driver;
+    static AppiumDriverLocalService service;
+    static URL serverUrl;
 
 
-    public  void StartServer(){
-        String command = "appium --port "+ port;
-        try
-        {
+    public void StartServer() {
+        String command = "appium --port " + port;
+        try {
 
             DesiredCapabilities c = new DesiredCapabilities();
 
-            c.setCapability("deviceName",BaseFile.avdName);
-            c.setCapability("udid",BaseFile.udid);
-            c.setCapability("platform",BaseFile.platform);
-            c.setCapability("platformVersion",BaseFile.androidVersion);
-            c.setCapability("appPackage",BaseFile.CalculatorPackageName);
-            c.setCapability("appActivity",BaseFile.CalculatorActivity);
+            c.setCapability("deviceName", BaseFile.avdName);
+            c.setCapability("udid", BaseFile.udid);
+            c.setCapability("platform", BaseFile.platform);
+            c.setCapability("platformVersion", BaseFile.androidVersion);
+            c.setCapability("appPackage", BaseFile.CalculatorPackageName);
+            c.setCapability("appActivity", BaseFile.CalculatorActivity);
 
-            driver = new AppiumDriver<MobileElement>(serverUrl,c);
+            driver = new AppiumDriver<MobileElement>(serverUrl, c);
 
-        }
-        catch (Exception e)
-        {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static boolean StartAppiumServer(){
-        try
-        {
-             AppiumServiceBuilder ssb =new AppiumServiceBuilder();
-             ssb.usingPort(4723);
+    public void StartServerUniversalMusicPlayer() {
+        String command = "appium --port " + port;
+        try {
 
-             service = AppiumDriverLocalService.buildService(ssb);
+            DesiredCapabilities c = new DesiredCapabilities();
 
-             if(!service.isRunning()){
-                 service.start();
-             }else{
-                 System.out.println("There is already a service running");
-             }
+            c.setCapability("deviceName", BaseFile.avdName);
+            c.setCapability("udid", BaseFile.udid);
+            c.setCapability("platform", BaseFile.platform);
+            c.setCapability("platformVersion", BaseFile.androidVersion);
+            c.setCapability("appPackage", BaseFile.UniversalMusicPlayerPackageName);
+            c.setCapability("appActivity", BaseFile.UniversalMusicPlayerActivityName);
+
+            driver = new AppiumDriver<MobileElement>(serverUrl, c);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean StartAppiumServer() {
+        try {
+            AppiumServiceBuilder ssb = new AppiumServiceBuilder();
+            ssb.usingPort(4723);
+
+            service = AppiumDriverLocalService.buildService(ssb);
+
+            if (!service.isRunning()) {
+                service.start();
+            } else {
+                System.out.println("There is already a service running");
+            }
             serverUrl = service.getUrl();
             System.out.println((serverUrl));
             return true;
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
 
     }
 
-
-    public static boolean CheckServer(){
+    public static boolean CheckServer() {
         boolean isServerRunning = false;
         ServerSocket serverSocket;
         try {
@@ -88,42 +104,38 @@ public class AppiumDriverInstance {
         return isServerRunning;
     }
 
-    public static boolean closeServer(){
-        try{
+    public static boolean closeServer() {
+        try {
             System.out.println(serverUrl);
             service.stop();
             return true;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return true;
         }
 
     }
 
-    public static boolean clickElementByXpath(By id){
-        try{
+    public static boolean clickElementByXpath(By id) {
+        try {
             WebElement element = driver.findElement(id);
             element.click();
 
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return false;
         }
         return true;
     }
 
-    public static boolean enterTextByXpath(By id , String text){
-        try{
+    public static boolean enterTextByXpath(By id, String text) {
+        try {
             MobileElement element = driver.findElement(id);
             element.sendKeys(text);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return false;
         }
         return true;
     }
-
-
-
-
 
 
 }

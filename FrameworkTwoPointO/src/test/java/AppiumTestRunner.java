@@ -11,29 +11,33 @@ import org.junit.rules.TestName;
 import org.openqa.selenium.By;
 import org.springframework.util.Assert;
 
-public class AppiumTestRunner  extends AppiumDriverInstance {
-   static Reporting r = new Reporting();
+public class AppiumTestRunner extends AppiumDriverInstance {
 
-   @Rule
-   public TestName name = new TestName();
+    static Reporting r = new Reporting(driver);
+
+    @Rule
+    public TestName name = new TestName();
 
     @Before
-    public void init(){
+    public void init() {
+
+
         try {
             BaseFile.tname = name.getMethodName();
+
             r.CreateReportFile();
-            if(CommandLineExecutorInterface.runCommand()){
 
-            }
-
+            CommandLineExecutorInterface.StartEmulator();
 
             StartAppiumServer();
+
             StartServer();
+
+            r.SetDriver(driver);
 
             r.Pass("Successfully Started required servers");
 
-
-        }catch(Exception ex){
+        } catch (Exception ex) {
 
             String message = ex.getMessage();
             System.out.println(message);
@@ -42,35 +46,41 @@ public class AppiumTestRunner  extends AppiumDriverInstance {
     }
 
     @Test
-    public void AppiumTest(){
+    public void AppiumTest() {
         System.out.println("Starting Clicking Test.");
-        boolean result = clickElementByXpath(AppiumPageObjects.one());
 
-        result = clickElementByXpath(AppiumPageObjects.two());
-
-        result = clickElementByXpath(AppiumPageObjects.three());
-
-        result = clickElementByXpath(AppiumPageObjects.four());
-
-        result = clickElementByXpath(AppiumPageObjects.five());
-
-        result = clickElementByXpath(AppiumPageObjects.six());
-
-        result = clickElementByXpath(AppiumPageObjects.seven());
-
-        result = clickElementByXpath(AppiumPageObjects.eight());
-
-        result = clickElementByXpath(AppiumPageObjects.nine());
-
-        if(!result){
-            r.Fail("Could not enter all the numbers into the field.");
+        if (!clickElementByXpath(AppiumPageObjects.one())) {
+            r.FailWithEmulatorScreenShot("Oops could not press 1");
         }
-
-        r.Pass("Successfully enterd numbers into the calculator.");
+        if (!clickElementByXpath(AppiumPageObjects.two())) {
+            r.FailWithEmulatorScreenShot("Oops could not press 2");
+        }
+        if (!clickElementByXpath(AppiumPageObjects.three())) {
+            r.FailWithEmulatorScreenShot("Oops could not press 3");
+        }
+        if (!clickElementByXpath(AppiumPageObjects.four())) {
+            r.FailWithEmulatorScreenShot("Oops could not press 4");
+        }
+        if (!clickElementByXpath(AppiumPageObjects.five())) {
+            r.FailWithEmulatorScreenShot("Oops could not press 5 ");
+        }
+        if (!clickElementByXpath(AppiumPageObjects.six())) {
+            r.FailWithEmulatorScreenShot("Oops could not press 6");
+        }
+        if (!clickElementByXpath(AppiumPageObjects.seven())) {
+            r.FailWithEmulatorScreenShot("Oops could not press 7");
+        }
+        if (!clickElementByXpath(AppiumPageObjects.eight())) {
+            r.FailWithEmulatorScreenShot("Oops could not press 8");
+        }
+        if (!clickElementByXpath(AppiumPageObjects.nine())) {
+            r.FailWithEmulatorScreenShot("Oops could not press 9");
+        }
+        r.PassWithEmulatorScreenShot("Successfully enterd numbers into the calculator.");
     }
 
     @After
-    public void shutdown(){
+    public void shutdown() {
         System.out.println("Shutdown");
         boolean result = closeServer();
         r.Pass("Successfully server shut down.");

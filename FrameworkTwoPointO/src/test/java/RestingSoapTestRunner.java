@@ -9,7 +9,7 @@ import org.junit.rules.TestName;
 
 public class RestingSoapTestRunner extends APIDriverInterface {
 
-    static Reporting r = new Reporting();
+    static Reporting r = new Reporting(null);
 
     @Rule
     public TestName name = new TestName();
